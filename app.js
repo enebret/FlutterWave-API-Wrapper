@@ -199,13 +199,13 @@ app.get("/createwallet", async (req, res) => {
   });
 });
 
-const transfer_between_users = async (bank, accountNumber, Amount, Currency, Narration) => {
-  const flw = new Flutterwave(process.env.FLW_PUBLIC_KEY, process.env.FLW_SECRET_KEY);
-  app.get("/wallet/:userId/transfers", async (req, res) => {
-    try {
-      const { userId } = req.params;
+
   
-      const wallet = await Wallet.findOne({ userId });
+  app.get("/wallet/:userId/transfers", async (req, res) => {
+      const { userId } = req.params;
+      const flw = new Flutterwave(process.env.FLW_PUBLIC_KEY, process.env.FLW_SECRET_KEY);
+      const transfer_between_users = async (bank, accountNumber, Amount, Currency, Narration) => {
+        const wallet = await Wallet.findOne({ userId });
       if(wallet.balance>Amount){
         const details = {
           account_bank: bank,
@@ -225,11 +225,10 @@ const transfer_between_users = async (bank, accountNumber, Amount, Currency, Nar
           .catch(console.log);
       }
       
-    } catch (err) {
-      console.log(err);
-    }
+    } 
+
   });
 
-}
+
 
 module.exports = app;
